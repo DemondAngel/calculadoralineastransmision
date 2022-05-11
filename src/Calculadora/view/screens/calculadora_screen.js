@@ -228,6 +228,7 @@ export default class CalculadoraScreen extends React.Component{
             txtC: 0,
             txtD: 0
         }} onSubmit={(values) => {
+
            this.calcularImpedancia(values);
           }}>
           
@@ -268,30 +269,43 @@ export default class CalculadoraScreen extends React.Component{
         required={true} onChange={handleChange}></FieldComponent>
       </div>
           : this.state.lineaTransmision === '2' ? <div id="fieldsCableCoaxial">
-          <FieldComponent id="txtA" type="number" name="Radio a" placeholder='Radio a' value={values.a} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtA" type="number" name="Radio a: " placeholder='Radio a' value={values.a} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
-          <FieldComponent id="txtB" type="number" name="Radio b" placeholder='Radio b' value={values.b} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtB" type="number" name="Radio b: " placeholder='Radio b' value={values.b} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
-          <FieldComponent id="txtC" type="number" name="Radio c" placeholder='Radio c' value={values.c} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtC" type="number" name="Radio c: " placeholder='Radio c' value={values.c} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
         </div>:
           this.state.lineaTransmision === '3' ? <div id="fieldsLineaBifiliar">
-          <FieldComponent id="txtA" type="number" name="Radio de los conductores" placeholder='Radio de los conductores' value={values.a} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtA" type="number" name="Radio de los conductores: " placeholder='Radio de los conductores' value={values.a} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
-          <FieldComponent id="txtD" type="number" name="Distancia de separación de los conductores" placeholder='Distancia de separación de los conductores' value={values.d} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtD" type="number" name="Distancia de separación de los conductores: " placeholder='Distancia de separación de los conductores' value={values.d} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
         </div> : ''}
-      <FieldComponent id="txtF" type="number" name="Frecuencia en Hz" placeholder='Frecuencia en Hz' value={values.f} min='0' max='1000000' step="0.00001"
+      <FieldComponent id="txtF" type="number" name="Frecuencia en Hz: " placeholder='Frecuencia en Hz' value={values.f} min='0' max='1000000' step="0.00001"
         required={false}></FieldComponent>
-      <FieldComponent id="txtZ" type="number" name="Impedancia Característica" placeholder='mpedancia Característica' value={this.props.z0} min='0' max='1000000' step="0.00001"
+      <FieldComponent id="txtZ" type="number" name="Impedancia Característica: " placeholder='mpedancia Característica' value={this.props.z0} min='0' max='1000000' step="0.00001"
         required={false}></FieldComponent>
-
-            <input type="button" value="Calcular a partir de dimensiones"/>
-            <br/>
-            <input type="submit" value="Calcular a partir de impedancia"/>
+            <input type="submit" value="Calcular a partir de dimensiones"/>
           </form>
             )
           }
+        </Formik>
+        <Formik initialValues={{
+            txtZ0: 0,
+            txtF: 0
+        }} onSubmit={(values) => {
+
+           //this.calcularDimensiones(values.txtZ0, values.txtF);
+          }}>
+            {({values, errors, touched, handleChange, handleSubmit, isSubmitting}) => (
+              <form onSubmit={handleSubmit}>
+                <FieldComponent id="txtF" type="number" name="Frecuencia en Hz: " placeholder='Frecuencia en Hz' value={values.f} min='0' max='1000000' step="0.00001"
+                required={false}></FieldComponent>
+              <FieldComponent id="txtZ" type="number" name="Impedancia Característica: " placeholder='mpedancia Característica' value={this.props.z0} min='0' max='1000000' step="0.00001"
+                required={false}></FieldComponent>
+                <input type="button" value="Calcular a partir de impedancia"/>
+            </form>)}
         </Formik>
       </section>
       </div>

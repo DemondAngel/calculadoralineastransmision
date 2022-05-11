@@ -36,4 +36,23 @@ export default class MicrocintaBloc {
         return z0;
     }
 
+    calcularDimensiones(z0, er,f){
+
+
+        if(z0 > (44-2*er)){
+            let Hc = (z0*this.bigmath.sqrt(2*(er+1)) )/119.9 + (1/2)( (er-1) / (er+1))*(this.bigmath.log(this.bigmath.pi/2) + (1/er)*this.bigmath.log(4/this.bigmath.pi));
+            let relation = this.bigmath.pow(this.bigmath.pow(this.bigmath.e, Hc)/8  - 1/(4*this.bigmath.pow(this.bigmath.e,Hc)),-1);
+        }
+        else{
+            let der = 59.95*this.bigmath.pow(this.bigmath.pi,2)/z0;
+            let de1 = 59.95*this.bigmath.pow(this.bigmath.pi, 2)/z0;
+
+            let relation = (2/this.bigmath.pi)*( (der-1) - this.bigmath.log(2*de1-1) + ( (er-1)/(this.bigmath.pi*er))*(this.bigmath.log(der-1) + 0.293 - 0.517/er));
+        }
+            
+
+
+        
+    }
+
 }
