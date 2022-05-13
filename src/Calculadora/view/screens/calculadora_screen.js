@@ -8,6 +8,7 @@ import { Formik } from 'formik';
 import { SelectComponent, FieldComponent } from '../../../components/field_component';
 import CableCoaxialBloc from '../../../CableCoaxial/bloc/cable_coaxial_bloc';
 import LineaBifiliarBloc from '../../../LineaBifiliar/bloc/linea_bifiliar_bloc';
+import './styles/style.css';
 
 export default class CalculadoraScreen extends React.Component{
   
@@ -230,11 +231,11 @@ export default class CalculadoraScreen extends React.Component{
     }
 
     render(){
-        return  <div><header>
-        <h1>Calculadora de Líneas de Transmisión</h1>
+        return  <div><header className="text-center primary-color p-5">
+        <h1 className="text-lg title">Calculadora de Líneas de Transmisión</h1>
       </header>
 
-      <section>
+      <section className="p-10 text-justify">
         <Formik initialValues={{
             txtW: 0,
             txtH: 0,
@@ -252,7 +253,7 @@ export default class CalculadoraScreen extends React.Component{
             ({values, errors, touched, handleChange, handleSubmit, isSubmitting}) => (
           <form onSubmit={handleSubmit}>
           
-            <SelectComponent id="cmbLineaTransmision" name="Elige tu Línea de Transmisión para calcular" value={this.state.lineaTransmision}
+            <SelectComponent id="cmbLineaTransmision" name="Elige tu Línea de Transmisión para calcular: " value={this.state.lineaTransmision}
             onChange={this.handleChangeLineaTransmision} values={['0', '1', '2', '3']}
             keys={['Seleccione una opción', 'Microcintas', 'Cables coaxiales', 'Línea bifiliar o alambres paralelos']}></SelectComponent>
 
@@ -262,8 +263,9 @@ export default class CalculadoraScreen extends React.Component{
             keys={['Seleccione una opción', 'Aire', 'Alcohol Etílico', 'Oxido de Aluminio','Baquelita','Dioxido de Carbono','Vidrio','Hielo','Mica','Nylon','Papel','Plexigas',
             'Polietileno','Poliestiereno','Porcelana','Vidrio Pyrex','Cuarzo','Hule','Nieve','Tierra seca','Teflon','Madera seca','Otro material']}></SelectComponent>
 
-          { this.state.dielectric === '1' && <FieldComponent id="txtEr" type="number" name="Permitividad relativa" placeholder='Permitividad relativa' value={this.props.er} min='0' max='1000' step="0.00001"
-        required={true}></FieldComponent>
+          { this.state.dielectric === '1' && <FieldComponent 
+          id="txtEr" type="number" name="Permitividad relativa" placeholder='Permitividad relativa'
+          value={this.props.er} min='0' max='1000' step="0.00001" required={true}></FieldComponent>
           }
           <SelectComponent id="cmbConductor" name="Selecciona tu conductor:" value={this.state.conductivity}
             onChange={this.handleChangeConductivity} values={['0', 'Fierro', 'Niquel', 'Laton', 'Zinc', 'Tungsteno', 'Aluminio', 'Oro', 'Cobre', 'Plata', '1']}
@@ -300,13 +302,13 @@ export default class CalculadoraScreen extends React.Component{
         </div> : ''}
       <FieldComponent id="txtF" type="number" name="Frecuencia en Hz: " placeholder='Frecuencia en Hz' value={values.txtF} min='0' max='10000000000' step="0.00001"
         required={false} onChange={handleChange}></FieldComponent>
-            <input type="submit" value="Calcular Impedancia a partir de dimensiones"/>
+            <input type="submit" className="button" value="Calcular Impedancia a partir de dimensiones"/>
             
           </form>
             )
           }
         </Formik>
-        <h3>La impedancia es: { this.state.lineaTransmision === '0' ? 0:this.state.lineaTransmision === '1' ? this.state.z0: `${this.state.z0}`}</h3>
+        <h3 className="text-lg p-2">La impedancia es: { this.state.lineaTransmision === '0' ? 0:this.state.lineaTransmision === '1' ? this.state.z0: `${this.state.z0}`}</h3>
       </section>
       </div>
       ;

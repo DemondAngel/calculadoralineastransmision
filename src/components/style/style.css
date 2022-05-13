@@ -1,0 +1,14 @@
+.select{
+    border-radius: 25px!important;
+    background-color: #42a5f5;
+    color:white;
+    padding:10px
+}
+
+.select:hover{
+    cursor:pointer;
+}
+
+.option:hover{
+    background-color: #ec407a;
+}

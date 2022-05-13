@@ -1,3 +1,30 @@
+.primary-color{
+    background-color: #42a5f5;
+}
+
+.accent-color{
+    background-color: #ec407a;
+}
+
+.label{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14pt;
+}
+
+.button{
+    border-radius: 30px;
+    color:white;
+    background-color: #ec407a!important;
+    width: 400px;
+    height: 50px;
+    padding: 5px;
+}
+
+.button:hover{
+    cursor: pointer;
+    background-color: #42a5f5
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
