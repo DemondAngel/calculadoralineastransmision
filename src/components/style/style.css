@@ -12,3 +12,7 @@
 .option:hover{
     background-color: #ec407a;
 }
+
+.input{
+    width: 300px!important
+}

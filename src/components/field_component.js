@@ -3,7 +3,7 @@ import './style/style.css';
 
 const FieldComponent = ({id, name, type, placeholder, min, max, step, required, value, onChange}) =>
          (<div className="p-2"><label htmlFor={id} className="label">{name}</label>
-        <input value={value} onChange={onChange} type={type} placeholder={placeholder} id={id} min={min} max={max}
+        <input className="input" value={value} onChange={onChange} type={type} placeholder={placeholder} id={id} min={min} max={max}
         step={step} required={required}/></div>);
 
 const SelectComponent = ({id, name, values, keys, value, onChange}) => {
