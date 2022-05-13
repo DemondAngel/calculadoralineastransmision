@@ -7,13 +7,13 @@ import MicrocintaBloc from '../../../Microcinta/bloc/microcinta_bloc';
 import { Formik } from 'formik';
 import { SelectComponent, FieldComponent } from '../../../components/field_component';
 import CableCoaxialBloc from '../../../CableCoaxial/bloc/cable_coaxial_bloc';
+import LineaBifiliarBloc from '../../../LineaBifiliar/bloc/linea_bifiliar_bloc';
 
 export default class CalculadoraScreen extends React.Component{
   
   microcinta = new Microcinta();
   cableCoaxial = new CableCoaxial();
   lineaBifiliar = new LineaBifiliar();
-  
 
     constructor(props) {
         super(props);
@@ -21,6 +21,7 @@ export default class CalculadoraScreen extends React.Component{
           lineaTransmision: '0',
           conductivity: '0',
           dielectric: '0',
+          z: {}
         };
         this.handleChangeLineaTransmision = this.handleChangeLineaTransmision.bind(this);
         this.handleChangeConductivity = this.handleChangeConductivity.bind(this);
@@ -182,7 +183,7 @@ export default class CalculadoraScreen extends React.Component{
     }
 
     getConductor(){
-      return this.conductivity[this.state.conductivity];
+      return this.conductivities[this.state.conductivity];
     }
 
     calcularImpedancia(data){
@@ -193,22 +194,37 @@ export default class CalculadoraScreen extends React.Component{
         let microcintaBloc = new MicrocintaBloc();
         this.microcinta.h = data.txtH;
         this.microcinta.w = data.txtW;
-        let z0 = microcintaBloc.calcularImpedancia(this.microcinta, dielectric.er);
-
-        console.log('La impedancia es: ' + z0);
+        this.setState({
+          z0: microcintaBloc.calcularImpedancia(this.microcinta, dielectric.er)
+        });
       }
       else if(this.state.lineaTransmision === '2'){
 
         let cableCoaxialBloc = new CableCoaxialBloc();
 
-        let cableCoaxial = new CableCoaxial();
+        this.cableCoaxial = new CableCoaxial();
         this.cableCoaxial.a = data.txtA;
         this.cableCoaxial.b = data.txtB;
         this.cableCoaxial.c = data.txtC;
+        
         let f = data.txtF;
         
-        let z0 = cableCoaxialBloc.calcularImpedancia(cableCoaxial, f, conductor.ur, dielectric.er, conductor.s, dielectric.tand);
-        console.log('La impedancia es: ' + z0);
+        this.setState({
+          z0: cableCoaxialBloc.calcularImpedancia(this.cableCoaxial, f, conductor.ur, dielectric.er, conductor.s, dielectric.tand)
+        });
+      }
+      else if(this.state.lineaTransmision === '3'){
+        let lineaBifiliarBloc = new LineaBifiliarBloc();;
+
+        this.lineaBifiliar.a = data.txtA;
+        console.log(this.lineaBifiliar.a);
+        this.lineaBifiliar.d = data.txtD;
+        console.log(this.lineaBifiliar.d);
+        let f = data.txtF;
+
+        this.setState({
+          z0: lineaBifiliarBloc.calcularImpedancia(this.lineaBifiliar, dielectric.tand, conductor.s, dielectric.er, conductor.ur, f)
+        });
       }
 
     }
@@ -228,7 +244,7 @@ export default class CalculadoraScreen extends React.Component{
             txtC: 0,
             txtD: 0
         }} onSubmit={(values) => {
-
+          
            this.calcularImpedancia(values);
           }}>
           
@@ -263,50 +279,34 @@ export default class CalculadoraScreen extends React.Component{
           }
           
           { this.state.lineaTransmision === '1' ? <div id="fieldsMicrocinta">
-        <FieldComponent id="txtW" type="number" name="Ancho de la cinta" placeholder='Ancho de la cinta en mm' value={values.width} min='0' max='1000' step="0.00001"
+        <FieldComponent id="txtW" type="number" name="Ancho de la cinta" placeholder='Ancho de la cinta en mm' value={values.txtW} min='0' max='1000' step="0.00001"
         required={true} onChange={handleChange}></FieldComponent>
-        <FieldComponent id="txtH" type="number" name="Alto de la cinta" placeholder='Alto de la cinta en mm' value={values.height} min='0' max='1000' step="0.00001"
+        <FieldComponent id="txtH" type="number" name="Alto de la cinta" placeholder='Alto de la cinta en mm' value={values.txtH} min='0' max='1000' step="0.00001"
         required={true} onChange={handleChange}></FieldComponent>
       </div>
           : this.state.lineaTransmision === '2' ? <div id="fieldsCableCoaxial">
-          <FieldComponent id="txtA" type="number" name="Radio a: " placeholder='Radio a' value={values.a} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtA" type="number" name="Radio a: " placeholder='Radio a' value={values.txtA} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
-          <FieldComponent id="txtB" type="number" name="Radio b: " placeholder='Radio b' value={values.b} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtB" type="number" name="Radio b: " placeholder='Radio b' value={values.txtB} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
-          <FieldComponent id="txtC" type="number" name="Radio c: " placeholder='Radio c' value={values.c} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtC" type="number" name="Radio c: " placeholder='Radio c' value={values.txtC} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
         </div>:
           this.state.lineaTransmision === '3' ? <div id="fieldsLineaBifiliar">
-          <FieldComponent id="txtA" type="number" name="Radio de los conductores: " placeholder='Radio de los conductores' value={values.a} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtA" type="number" name="Radio de los conductores: " placeholder='Radio de los conductores' value={values.txtA} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
-          <FieldComponent id="txtD" type="number" name="Distancia de separación de los conductores: " placeholder='Distancia de separación de los conductores' value={values.d} min='0' max='1000' step="0.00001"
+          <FieldComponent id="txtD" type="number" name="Distancia de separación de los conductores: " placeholder='Distancia de separación de los conductores' value={values.txtD} min='0' max='1000' step="0.00001"
           required={true} onChange={handleChange}></FieldComponent>
         </div> : ''}
-      <FieldComponent id="txtF" type="number" name="Frecuencia en Hz: " placeholder='Frecuencia en Hz' value={values.f} min='0' max='1000000' step="0.00001"
-        required={false}></FieldComponent>
-      <FieldComponent id="txtZ" type="number" name="Impedancia Característica: " placeholder='mpedancia Característica' value={this.props.z0} min='0' max='1000000' step="0.00001"
-        required={false}></FieldComponent>
-            <input type="submit" value="Calcular a partir de dimensiones"/>
+      <FieldComponent id="txtF" type="number" name="Frecuencia en Hz: " placeholder='Frecuencia en Hz' value={values.txtF} min='0' max='10000000000' step="0.00001"
+        required={false} onChange={handleChange}></FieldComponent>
+            <input type="submit" value="Calcular Impedancia a partir de dimensiones"/>
+            
           </form>
             )
           }
         </Formik>
-        <Formik initialValues={{
-            txtZ0: 0,
-            txtF: 0
-        }} onSubmit={(values) => {
-
-           //this.calcularDimensiones(values.txtZ0, values.txtF);
-          }}>
-            {({values, errors, touched, handleChange, handleSubmit, isSubmitting}) => (
-              <form onSubmit={handleSubmit}>
-                <FieldComponent id="txtF" type="number" name="Frecuencia en Hz: " placeholder='Frecuencia en Hz' value={values.f} min='0' max='1000000' step="0.00001"
-                required={false}></FieldComponent>
-              <FieldComponent id="txtZ" type="number" name="Impedancia Característica: " placeholder='mpedancia Característica' value={this.props.z0} min='0' max='1000000' step="0.00001"
-                required={false}></FieldComponent>
-                <input type="button" value="Calcular a partir de impedancia"/>
-            </form>)}
-        </Formik>
+        <h3>La impedancia es: { this.state.lineaTransmision === '0' ? 0:this.state.lineaTransmision === '1' ? this.state.z0: `${this.state.z0}`}</h3>
       </section>
       </div>
       ;
