@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/calculadoralineastransmision/static/css/main.fd951ffc.css",
+    "main.js": "/calculadoralineastransmision/static/js/main.aa1cf62a.js",
+    "static/js/787.95b918c8.chunk.js": "/calculadoralineastransmision/static/js/787.95b918c8.chunk.js",
+    "index.html": "/calculadoralineastransmision/index.html",
+    "main.fd951ffc.css.map": "/calculadoralineastransmision/static/css/main.fd951ffc.css.map",
+    "main.aa1cf62a.js.map": "/calculadoralineastransmision/static/js/main.aa1cf62a.js.map",
+    "787.95b918c8.chunk.js.map": "/calculadoralineastransmision/static/js/787.95b918c8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fd951ffc.css",
+    "static/js/main.aa1cf62a.js"
+  ]
+}
